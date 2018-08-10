@@ -1,5 +1,6 @@
 package com.example.shehryarraza.pakesports;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -34,9 +35,11 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(SignupActivity.this, date, myCalendar
+                new DatePickerDialog(SignupActivity.this, android.R.style.Theme_Holo_Light_Dialog,date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+
             }
         });
 
@@ -67,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
     };
 
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         DOB.setText(sdf.format(myCalendar.getTime()));
     }
