@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorGray">#808080</color>
-    <color name="colorYankeesBlue">#6D7275</color>
+    <color name="colorLightGray">#6D7275</color>
     <color name="colorDarkCandyAppleRed">#A40606</color>
 </resources>
