@@ -18,10 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity"
-            android:theme="@style/NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".MainUserScreen"
+            android:label="@string/title_activity_main_user_screen"></activity>
     </application>
 
 </manifest>
