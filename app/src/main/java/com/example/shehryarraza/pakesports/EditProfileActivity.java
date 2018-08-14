@@ -109,8 +109,6 @@ public class EditProfileActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString("userphoto", BitMapToString(bitmap));
 // set Fragmentclass Arguments
-            ProfileMyProfileFragment fragobj = new ProfileMyProfileFragment();
-            fragobj.setArguments(bundle);
             Toast.makeText(EditProfileActivity.this, "Hello boy!", Toast.LENGTH_SHORT).show();
 
 
