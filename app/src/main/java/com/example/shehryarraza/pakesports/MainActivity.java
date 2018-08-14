@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         textView.setHighlightColor(Color.TRANSPARENT);
 
     }
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 
     @Override
     public void onBackPressed() {

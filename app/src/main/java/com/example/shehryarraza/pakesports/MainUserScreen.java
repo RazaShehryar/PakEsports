@@ -1,5 +1,6 @@
 package com.example.shehryarraza.pakesports;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,15 +8,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainUserScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main_user_screen);
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.navigation);
+
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -33,7 +39,11 @@ public class MainUserScreen extends AppCompatActivity {
                                 selectedFragment = ProfileFragment.newInstance();
                                 break;
                         }
+
+
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
                         transaction.replace(R.id.frame_layout, selectedFragment);
                         transaction.commit();
                         return true;
@@ -47,5 +57,11 @@ public class MainUserScreen extends AppCompatActivity {
 
         //Used to select an item programmatically
         //bottomNavigationView.getMenu().getItem(2).setChecked(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 }

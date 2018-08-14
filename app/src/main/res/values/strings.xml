@@ -18,6 +18,11 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+    <string name="you_have_not_selected_any_game_s">You have not selected any game(s)</string>
+    <string name="favorite_games">Favorite Games</string>
+    <string name="no_description">No Description</string>
+    <string name="your_username">Your_Username</string>
+    <string name="todo">TODO</string>
 
 
 </resources>
