@@ -3,6 +3,7 @@ package com.example.shehryarraza.pakesports;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileMyProfileFragment extends Fragment {
     private Button button;
@@ -62,6 +64,7 @@ public class ProfileMyProfileFragment extends Fragment {
 
                 Uri myURI = Uri.parse(result);
                 Picasso.with(getContext()).load(myURI).transform(new CircleTransform()).into(imageView);
+
 
 
 

@@ -50,6 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
 
+
         editText = findViewById(R.id.description);
         imageButton = findViewById(R.id.imageButton);
         button = findViewById(R.id.button3);
@@ -57,7 +58,14 @@ public class EditProfileActivity extends AppCompatActivity {
         editText.append("");
 
 
+        Bitmap bitmap = new ImageSaver(EditProfileActivity.this).
+                setFileName("myImage.png").
+                setDirectoryName("images").
+                load();
 
+        Uri uri = getImageUri(EditProfileActivity.this,bitmap);
+
+        Picasso.with(EditProfileActivity.this).load(uri).transform(new CircleTransform()).into(imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,13 +140,31 @@ public class EditProfileActivity extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
 
                 selectedImageURI = data.getData();
-
                 Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(imageView);
                 send_image = selectedImageURI.toString();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",send_image);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageURI);
+                    new ImageSaver(EditProfileActivity.this).setFileName("myImage.png").setDirectoryName("images").save(bitmap);
+
+                } catch (IOException e) {
+                    Toast.makeText(this, "Error converting to Bitmap", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+
+
+
+
+
+
+
+
 // set Fragmentclass Arguments
                 Toast.makeText(EditProfileActivity.this, "Hello boy!", Toast.LENGTH_SHORT).show();
 
@@ -149,6 +175,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
 }
