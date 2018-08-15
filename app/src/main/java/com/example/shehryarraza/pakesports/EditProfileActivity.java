@@ -1,6 +1,7 @@
 package com.example.shehryarraza.pakesports;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -31,9 +33,6 @@ import java.io.IOException;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    SharedPreferences sharedpreferences;
-    public static final String mypreference = "mypref";
-    public static final String imageURI = "imageURI";
 
     private EditText editText;
     private static ImageButton imageButton;
@@ -41,7 +40,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button button;
     private Uri selectedImageURI = null;
     private ImageView imageView;
-
+    public String send_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,11 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            imageView.setImageBitmap(bitmap);
-            Bundle bundle = new Bundle();
-            bundle.putString("userphoto", BitMapToString(bitmap));
-// set Fragmentclass Arguments
-            Toast.makeText(EditProfileActivity.this, "Hello boy!", Toast.LENGTH_SHORT).show();
+
 
 
         }
@@ -138,7 +133,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 selectedImageURI = data.getData();
 
-                Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(target);
+                Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(imageView);
+                send_image = selectedImageURI.toString();
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result",send_image);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+// set Fragmentclass Arguments
+                Toast.makeText(EditProfileActivity.this, "Hello boy!", Toast.LENGTH_SHORT).show();
 
 
             }
