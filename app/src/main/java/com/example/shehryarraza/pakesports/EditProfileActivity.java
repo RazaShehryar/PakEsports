@@ -39,7 +39,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 2;
     private Button button;
     private Uri selectedImageURI = null;
-    private ImageView imageView;
     public String send_image;
 
     @Override
@@ -54,7 +53,6 @@ public class EditProfileActivity extends AppCompatActivity {
         editText = findViewById(R.id.description);
         imageButton = findViewById(R.id.imageButton);
         button = findViewById(R.id.button3);
-        imageView = findViewById(R.id.imageView2);
         editText.append("");
 
 
@@ -63,10 +61,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 setDirectoryName("images").
                 load();
 
-        Uri uri = getImageUri(EditProfileActivity.this,bitmap);
+        getImageUri getImageUri = new getImageUri();
+
+        Uri uri = getImageUri.getImageUri(EditProfileActivity.this,bitmap);
 
         Picasso.with(EditProfileActivity.this).load(uri).transform(new CircleTransform()).into(imageButton);
-
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +78,9 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
-    public String BitMapToString(Bitmap bitmap){
+   /* public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte [] b=baos.toByteArray();
@@ -101,7 +97,7 @@ public class EditProfileActivity extends AppCompatActivity {
             e.getMessage();
             return null;
         }
-    }
+    }*/
 
     private Target target = new Target() {
         @Override
@@ -134,7 +130,9 @@ public class EditProfileActivity extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
 
                 selectedImageURI = data.getData();
+
                 Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(imageButton);
+
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -142,11 +140,11 @@ public class EditProfileActivity extends AppCompatActivity {
                         send_image = selectedImageURI.toString();
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("result",send_image);
-
                         setResult(Activity.RESULT_OK,returnIntent);
                         finish();
                     }
                 });
+
 
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageURI);
@@ -158,32 +156,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
-// set Fragmentclass Arguments
-                Toast.makeText(EditProfileActivity.this, "Hello boy!", Toast.LENGTH_SHORT).show();
-
-
             }
 
         }
 
 
-
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
+
 
 }
