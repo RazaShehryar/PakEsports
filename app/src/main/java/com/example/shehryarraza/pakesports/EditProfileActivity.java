@@ -66,15 +66,9 @@ public class EditProfileActivity extends AppCompatActivity {
         Uri uri = getImageUri(EditProfileActivity.this,bitmap);
 
         Picasso.with(EditProfileActivity.this).load(uri).transform(new CircleTransform()).into(imageButton);
+
+
         imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -140,12 +134,20 @@ public class EditProfileActivity extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
 
                 selectedImageURI = data.getData();
-                Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(imageView);
-                send_image = selectedImageURI.toString();
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("result",send_image);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(imageButton);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        send_image = selectedImageURI.toString();
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("result",send_image);
+
+                        setResult(Activity.RESULT_OK,returnIntent);
+                        finish();
+                    }
+                });
+
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageURI);
                     new ImageSaver(EditProfileActivity.this).setFileName("myImage.png").setDirectoryName("images").save(bitmap);
