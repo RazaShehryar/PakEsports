@@ -2,33 +2,20 @@ package com.example.shehryarraza.pakesports;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-
-import android.provider.MediaStore;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import id.zelory.compressor.Compressor;
 
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -78,6 +65,8 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
    /* public String BitMapToString(Bitmap bitmap){
@@ -99,25 +88,6 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }*/
 
-    private Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-
-
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-
-    };
 
 
 
@@ -131,12 +101,27 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 selectedImageURI = data.getData();
 
+
+
                 Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(imageButton);
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
+                        ConvertImage convertImage = new ConvertImage(EditProfileActivity.this);
+
+                        String convertedImageFile = convertImage.getPathFromGooglePhotosUri(selectedImageURI);
+
+                        File file = new File(convertedImageFile);
+                        Bitmap compressedImageBitmap;
+                        try {
+                            compressedImageBitmap = new Compressor(getBaseContext()).compressToBitmap(file);
+                            new ImageSaver(EditProfileActivity.this).setFileName("myImage.png").setDirectoryName("images").save(compressedImageBitmap);
+
+                        } catch (IOException e) {
+                            Toast.makeText(EditProfileActivity.this, "Image size too big to upload", Toast.LENGTH_SHORT).show();
+                        }
                         send_image = selectedImageURI.toString();
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("result",send_image);
@@ -145,24 +130,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
 
-
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageURI);
-                    new ImageSaver(EditProfileActivity.this).setFileName("myImage.png").setDirectoryName("images").save(bitmap);
-
-                } catch (IOException e) {
-                    Toast.makeText(this, "Error converting to Bitmap", Toast.LENGTH_SHORT).show();
-                }
-
-
-
             }
 
         }
 
-
     }
-
-
 
 }
