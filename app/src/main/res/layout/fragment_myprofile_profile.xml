@@ -104,7 +104,7 @@
         android:contentDescription="@string/todo" />
 
     <TextView
-        android:id="@+id/Name"
+        android:id="@+id/user_name"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

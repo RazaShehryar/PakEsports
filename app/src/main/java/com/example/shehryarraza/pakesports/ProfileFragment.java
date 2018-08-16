@@ -2,11 +2,13 @@ package com.example.shehryarraza.pakesports;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -25,8 +27,8 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Override
@@ -55,6 +57,7 @@ public class ProfileFragment extends Fragment {
         adapter.addFragment(new ProfileMyProfileFragment(), "Events");
         adapter.addFragment(new ProfileMyProfileFragment(), "Groups");
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
 
 
 
@@ -90,6 +93,7 @@ public class ProfileFragment extends Fragment {
     }
     @Override
     public void onResume() {
+
 
         super.onResume();
 
