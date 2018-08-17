@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.icu.text.IDNA;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +32,14 @@ public class ProfileMyProfileFragment extends Fragment {
     private ImageView imageView;
     private TextView tv;
     public String result;
+    private ProgressBar progressBar;
     private static final int SELECT_PICTURE = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
     }
 
@@ -48,7 +54,10 @@ public class ProfileMyProfileFragment extends Fragment {
 
        imageView = view.findViewById(R.id.imageView4);
        tv = view.findViewById(R.id.user_name);
+       progressBar = view.findViewById(R.id.progressBar4);
 
+        imageView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
        return view;
 
@@ -58,13 +67,8 @@ public class ProfileMyProfileFragment extends Fragment {
     @Override
     public void onResume() {
 
-
         // Always load back the image when fragment is resumed
-        Bitmap bitmap = new ImageSaver(getContext()).
-                setFileName("myImage.png").
-                setDirectoryName("images").
-                load();
-
+        new AsyncTaskRunner().execute(imageView);
 
         SharedPreferences prefs = getContext().getSharedPreferences("myRef", MODE_PRIVATE);
         final String loadedString = prefs.getString("correctname", null);
@@ -80,11 +84,6 @@ public class ProfileMyProfileFragment extends Fragment {
             }
         });
 
-        getImageUri getImageUri = new getImageUri();
-
-        Uri uri = getImageUri.getImageUri(getContext(),bitmap);
-
-        Picasso.with(getActivity()).load(uri).transform(new CircleTransform()).into(imageView);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("My Profile");
 
@@ -111,5 +110,37 @@ public class ProfileMyProfileFragment extends Fragment {
             }
         }
     }
+
+    class AsyncTaskRunner extends AsyncTask<Object, Void, Uri> {
+
+
+        @Override
+        protected Uri doInBackground(Object... params) {
+            Bitmap bitmap = new ImageSaver(getContext()).
+                    setFileName("myImage.png").
+                    setDirectoryName("images").
+                    load();
+
+
+            getImageUri getImageUri = new getImageUri();
+
+            Uri uri = getImageUri.getImageUri(getContext(), bitmap);
+
+            return uri;
+
+
+        }
+
+
+            @Override
+            protected void onPostExecute (Uri myUri){
+                // execution of result of Long time consuming operation
+                Picasso.with(getActivity()).load(myUri).transform(new CircleTransform()).into(imageView);
+                imageView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            }
+
+        }
+
 
 }

@@ -94,7 +94,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
 
-
         super.onResume();
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("My Profile");

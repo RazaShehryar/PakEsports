@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
@@ -32,6 +34,7 @@ public class EditProfileActivity extends AppCompatActivity {
     public String send_image;
     public String full_name;
     private TextView textView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,11 @@ public class EditProfileActivity extends AppCompatActivity {
         imageButton = findViewById(R.id.imageButton);
         button = findViewById(R.id.button3);
         textView = findViewById(R.id.textView4);
+        progressBar = findViewById(R.id.progressBar3);
         Description.append("");
+
+
+
 
         Bitmap bitmap = new ImageSaver(EditProfileActivity.this).
                 setFileName("myImage.png").
@@ -63,10 +70,9 @@ public class EditProfileActivity extends AppCompatActivity {
         View.OnClickListener l = new View.OnClickListener() {
 
             public void onClick(View v) {
-
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
             }
         };
@@ -115,28 +121,50 @@ public class EditProfileActivity extends AppCompatActivity {
                 editor.putString("image", alpha);
                 editor.apply();
 
-                Picasso.with(this).load(selectedImageURI).transform(new CircleTransform()).into(imageButton);
-
-                ConvertImage convertImage = new ConvertImage(EditProfileActivity.this);
-
-                String convertedImageFile = convertImage.getPathFromGooglePhotosUri(selectedImageURI);
-
-                File file = new File(convertedImageFile);
-                Bitmap compressedImageBitmap;
-                try {
-                    compressedImageBitmap = new Compressor(getBaseContext()).compressToBitmap(file);
-                    new ImageSaver(EditProfileActivity.this).setFileName("myImage.png").setDirectoryName("images").save(compressedImageBitmap);
-
-                } catch (IOException e) {
-                    Toast.makeText(EditProfileActivity.this, "Image size too big to upload", Toast.LENGTH_SHORT).show();
-                }
-
+                new AsyncTaskRunnerProfile().execute();
 
             }
 
         }
+        else{
+            imageButton.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
 
     }
+
+    class AsyncTaskRunnerProfile extends AsyncTask<Object, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Object... params) {
+            ConvertImage convertImage = new ConvertImage(EditProfileActivity.this);
+
+            String convertedImageFile = convertImage.getPathFromGooglePhotosUri(selectedImageURI);
+
+            File file = new File(convertedImageFile);
+            Bitmap compressedImageBitmap;
+            try {
+                compressedImageBitmap = new Compressor(getBaseContext()).compressToBitmap(file);
+                new ImageSaver(EditProfileActivity.this).setFileName("myImage.png").setDirectoryName("images").save(compressedImageBitmap);
+
+            } catch (IOException e) {
+                Toast.makeText(EditProfileActivity.this, "Image size too big to upload", Toast.LENGTH_SHORT).show();
+            }
+
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute (Void myUri){
+            // execution of result of Long time consuming operation
+            Picasso.with(EditProfileActivity.this).load(selectedImageURI).transform(new CircleTransform()).into(imageButton);
+        }
+
+    }
+
 
     @Override
     protected void onResume() {
@@ -154,13 +182,9 @@ public class EditProfileActivity extends AppCompatActivity {
         Fullname.setText("");
         Fullname.append(s);
 
-
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
 
                 Intent returnIntent = new Intent();
                 Bundle extras = new Bundle();
@@ -178,7 +202,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-
         super.onResume();
     }
+
 }

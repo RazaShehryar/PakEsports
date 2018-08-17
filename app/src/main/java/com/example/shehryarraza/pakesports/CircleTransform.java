@@ -5,13 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.nfc.Tag;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.squareup.picasso.Transformation;
 
 import java.io.ByteArrayOutputStream;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 public class CircleTransform implements Transformation {
@@ -27,10 +30,12 @@ public class CircleTransform implements Transformation {
             source.recycle();
         }
 
+
         Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
 
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
+
         BitmapShader shader = new BitmapShader(squaredBitmap,
                 BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
         paint.setShader(shader);
@@ -41,7 +46,6 @@ public class CircleTransform implements Transformation {
 
         squaredBitmap.recycle();
         return bitmap;
-
 
     }
 

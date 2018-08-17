@@ -8,6 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.io.IOException;
+
+import id.zelory.compressor.Compressor;
 
 public class MainUserScreen extends AppCompatActivity {
 
@@ -20,13 +25,15 @@ public class MainUserScreen extends AppCompatActivity {
 
 
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.action_item1:
@@ -41,11 +48,19 @@ public class MainUserScreen extends AppCompatActivity {
                         }
 
 
+
+
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-                        transaction.replace(R.id.frame_layout, selectedFragment);
-                        transaction.commit();
+                        if (item.getItemId() != bottomNavigationView.getSelectedItemId()) {
+
+                            transaction.replace(R.id.frame_layout, selectedFragment);
+                            transaction.commit();
+                        }
+                        else{
+
+                        }
                         return true;
                     }
                 });

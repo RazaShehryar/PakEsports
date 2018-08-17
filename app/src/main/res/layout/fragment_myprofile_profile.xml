@@ -4,6 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/progressBar4"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.155"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.11" />
+
     <Button
         android:id="@+id/edit_profile"
         android:layout_width="289dp"
@@ -83,25 +98,25 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="137dp"
+        android:layout_width="151dp"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-
         android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+
+        android:contentDescription="@string/todo"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.144"
-        app:srcCompat="@drawable/user_profile_image"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/user_profile_image" />
 
     <TextView
         android:id="@+id/user_name"
@@ -122,4 +137,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.235" />
+
 </android.support.constraint.ConstraintLayout>
