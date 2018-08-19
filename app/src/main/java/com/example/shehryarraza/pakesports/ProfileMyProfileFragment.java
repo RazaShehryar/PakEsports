@@ -5,13 +5,10 @@ package com.example.shehryarraza.pakesports;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,8 +53,9 @@ public class ProfileMyProfileFragment extends Fragment {
        tv = view.findViewById(R.id.user_name);
        progressBar = view.findViewById(R.id.progressBar4);
 
-        imageView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+
+       imageView.setVisibility(View.GONE);
+       progressBar.setVisibility(View.VISIBLE);
 
        return view;
 
@@ -66,7 +64,6 @@ public class ProfileMyProfileFragment extends Fragment {
 
     @Override
     public void onResume() {
-
         // Always load back the image when fragment is resumed
         new AsyncTaskRunner().execute(imageView);
 
@@ -79,7 +76,7 @@ public class ProfileMyProfileFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), EditProfileActivity.class).putExtra("loadmystring", loadedString);
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class).putExtra("loadmystring", "HELLO");
                 startActivityForResult(intent, SELECT_PICTURE);
             }
         });
@@ -116,28 +113,45 @@ public class ProfileMyProfileFragment extends Fragment {
 
         @Override
         protected Uri doInBackground(Object... params) {
+
             Bitmap bitmap = new ImageSaver(getContext()).
                     setFileName("myImage.png").
                     setDirectoryName("images").
                     load();
 
+            if (bitmap != null) {
+                getImageUri getImageUri = new getImageUri();
 
-            getImageUri getImageUri = new getImageUri();
+                Uri uri = getImageUri.getImageUri(getContext(), bitmap);
 
-            Uri uri = getImageUri.getImageUri(getContext(), bitmap);
 
-            return uri;
+                return uri;
+            }
 
+            else {
+
+            }
+            return null;
 
         }
 
 
             @Override
             protected void onPostExecute (Uri myUri){
+
                 // execution of result of Long time consuming operation
-                Picasso.with(getActivity()).load(myUri).transform(new CircleTransform()).into(imageView);
-                imageView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+                if (myUri == null) {
+                    Picasso.with(getActivity()).load(R.drawable.user_profile_image).transform(new CircleTransform()).into(imageView);
+                    imageView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                else {
+                    Picasso.with(getActivity()).load(myUri).transform(new CircleTransform()).into(imageView);
+                    imageView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+
             }
 
         }

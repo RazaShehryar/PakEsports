@@ -61,10 +61,16 @@ public class EditProfileActivity extends AppCompatActivity {
                 setDirectoryName("images").
                 load();
 
-        getImageUri getImageUri = new getImageUri();
-        Uri uri = getImageUri.getImageUri(EditProfileActivity.this,bitmap);
-        Picasso.with(EditProfileActivity.this).load(uri).transform(new CircleTransform()).into(imageButton);
 
+        if (bitmap != null) {
+            getImageUri getImageUri = new getImageUri();
+            Uri uri = getImageUri.getImageUri(EditProfileActivity.this, bitmap);
+            Picasso.with(EditProfileActivity.this).load(uri).transform(new CircleTransform()).into(imageButton);
+        }
+
+        else {
+
+        }
 
 
         View.OnClickListener l = new View.OnClickListener() {

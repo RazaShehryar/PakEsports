@@ -6,11 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class ImageSaver {
 
@@ -41,19 +43,22 @@ public class ImageSaver {
     public void save(Bitmap bitmapImage) {
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream(createFile());
+            fileOutputStream = new FileOutputStream(createFile(), false);
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 if (fileOutputStream != null) {
+                    fileOutputStream.flush();
                     fileOutputStream.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
     }
 
     @NonNull
@@ -69,7 +74,9 @@ public class ImageSaver {
             Log.e("ImageSaver","Error creating directory " + directory);
         }
 
-        return new File(directory, fileName);
+
+
+        return new File(directory,fileName);
     }
 
     private File getAlbumStorageDir(String albumName) {
